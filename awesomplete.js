@@ -199,11 +199,15 @@ _.prototype = {
 		}
 	},
 
-	evaluate: function() {
+	evaluate: function(value) {
 		var me = this;
-		var value = this.input.value;
-
-		if (value.length >= this.minChars && this._list.length > 0) {
+		var minChars = 0;
+		if(typeof value === 'undefined'){
+			value = this.input.value;
+			minChars = this.minChars;
+		}
+				
+		if (value.length >= minChars && this._list.length > 0) {
 			this.index = -1;
 			// Populate list with options that match
 			this.ul.innerHTML = "";
