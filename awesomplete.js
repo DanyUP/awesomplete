@@ -202,7 +202,7 @@ _.prototype = {
 	evaluate: function(value) {
 		var me = this;
 		var minChars = 0;
-		if(typeof value === 'undefined'){
+		if(typeof value !== 'string'){
 			value = this.input.value;
 			minChars = this.minChars;
 		}
