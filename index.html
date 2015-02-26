@@ -359,6 +359,33 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	}	
 });</script></code></pre>
 	</section>
+
+	<section id="select-box">
+	<h2>Select box autocomplete (with select box plugin)</h2>
+	<p>The underlying (hidden) select box is changed accordingly</p>
+	<p>
+		<select class="awesomplete">
+			<option>Ada</option>
+			<option>Java</option>
+			<option>JavaScript</option>
+			<option>Brainfuck</option>
+			<option>LOLCODE</option>
+			<option>Node.js</option>
+			<option>Ruby on Rails</option>
+		</select>
+
+	</p>
+
+	<pre class="language-markup"><code>&lt;select class="awesomplete">
+	&lt;option>Ada&lt;/option>
+	&lt;option>Java&lt;/option>
+	&lt;option>JavaScript&lt;/option>
+	&lt;option>Brainfuck&lt;/option>
+	&lt;option>LOLCODE&lt;/option>
+	&lt;option>Node.js&lt;/option>
+	&lt;option>Ruby on Rails&lt;/option>
+&lt;/select></code></pre>
+	</section>
 </section>
 
 <section id="download">
@@ -376,7 +403,8 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 
 <footer>Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> &bull; <a href="http://lea.verou.me/2015/02/awesomplete-2kb-autocomplete-with-zero-dependencies">Read the blog post</a> &bull; <a href="http://shop.oreilly.com/product/0636920031123.do">Buy my book!</a> </footer>
 
-
+<script src="awesomplete.js"></script>
+<script src="plugins/awesomplete.select.js"></script>
 <script src="https://leaverou.github.io/prism/prism.js" defer></script>
 
 <a href="https://twitter.com/share" class="twitter-share-button" data-via="LeaVerou" data-size="large">Tweet</a>
