@@ -10,7 +10,17 @@
 	function init() {
 		Awesomplete.$$("select.awesomplete").forEach(function (select) {
 
-			var input = Awesomplete.$.create('input');
+			//Copying all data-* attributes
+			var dataAttributes = Array.prototype.slice.call(select.attributes)
+				.filter(function(attr) {
+					return /^data-/.test(attr.name);
+				}).reduce(function(obj, attr){
+					obj[attr.name] = attr.value;
+					return obj;
+				}, {});
+
+			console.log(dataAttributes);
+			var input = Awesomplete.$.create('input', dataAttributes);
 			select.parentElement.insertBefore(input, select);
 			select.setAttribute("hidden", "");
 
