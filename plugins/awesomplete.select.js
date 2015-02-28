@@ -14,9 +14,10 @@
 			select.parentElement.insertBefore(input, select);
 			select.setAttribute("hidden", "");
 
+
 			copySelectedValue(input, select);
 
-			var button = Awesomplete.$.create('button', {innerText: '\u25BC'});
+			var button = Awesomplete.$.create('button', {class: 'awesomplete'});
 			input.parentElement.insertBefore(button, input.nextSibling);
 
 			var awesompleteElement = new Awesomplete(input, {

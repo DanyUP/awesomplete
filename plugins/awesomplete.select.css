@@ -1,0 +1,7 @@
+button.awesomplete:after {
+	content: "\25BC";
+}
+
+button.awesomplete {
+	vertical-align: top;
+}
