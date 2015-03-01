@@ -201,10 +201,10 @@ _.prototype = {
 
 			$.fire(this.input, "awesomplete-select", {
 				text: selected.textContent,
+				attachedElement: selected.attachedElement,
 				preventDefault: function () {
 					prevented = true;
-				},
-				attachedElement: selected.attachedElement
+				}
 			});
 
 			if (!prevented) {
