@@ -23,11 +23,13 @@ var _ = self.Awesomplete = function (input, o) {
 		autoFirst: false,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
-		item: function (text, input) {
-			return $.create("li", {
+		item: function (text, input, attachedElement) {
+			var listItem = $.create("li", {
 				innerHTML: text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>"),
 				"aria-selected": "false"
 			});
+			listItem.attachedElement = attachedElement;
+			return listItem;
 		},
 		replace: function (text) {
 			this.input.value = text;
@@ -106,20 +108,33 @@ var _ = self.Awesomplete = function (input, o) {
 	_.all.push(this);
 };
 
+var ListItem = function(text, attachedElement){
+	this.text = text;
+	this.attachedElement = attachedElement;
+}
+
+function stringToListItem(text){
+	if(typeof text === 'string'){
+		return new ListItem(text);
+	} else {
+		return text;
+	}
+}
+
 _.prototype = {
 	set list(list) {
 		if (Array.isArray(list)) {
-			this._list = list;
+			this._list = list.map(stringToListItem);
 		}
 		else if (typeof list === "string" && list.indexOf(",") > -1) {
-				this._list = list.split(/\s*,\s*/);
+				this._list = list.split(/\s*,\s*/).map(stringToListItem);
 		}
 		else { // Element or CSS selector
 			list = $(list);
 
 			if (list && list.children) {
 				this._list = slice.apply(list.children).map(function (el) {
-					return el.innerHTML.trim();
+					return new ListItem(el.innerHTML.trim(), el);
 				});
 			}
 		}
@@ -188,13 +203,16 @@ _.prototype = {
 				text: selected.textContent,
 				preventDefault: function () {
 					prevented = true;
-				}
+				},
+				attachedElement: selected.attachedElement
 			});
 
 			if (!prevented) {
 				this.replace(selected.textContent);
 				this.close();
-				$.fire(this.input, "awesomplete-selectcomplete");
+				$.fire(this.input, "awesomplete-selectcomplete", {
+					attachedElement: selected.attachedElement
+				});
 			}
 		}
 	},
@@ -210,11 +228,11 @@ _.prototype = {
 
 			this._list
 				.filter(function(item) {
-					return me.filter(item, value);
+					return me.filter(item.text, value, item.attachedElement);
 				})
 				.sort(this.sort)
-				.every(function(text, i) {
-					me.ul.appendChild(me.item(text, value));
+				.every(function(item, i) {
+					me.ul.appendChild(me.item(item.text, value, item.attachedElement));
 
 					return i < me.maxItems - 1;
 				});
@@ -240,11 +258,13 @@ _.FILTER_STARTSWITH = function (text, input) {
 };
 
 _.SORT_BYLENGTH = function (a, b) {
-	if (a.length !== b.length) {
-		return a.length - b.length;
+	var textA = a.text;
+	var textB = b.text;
+	if (textA.length !== textB.length) {
+		return textA.length - textB.length;
 	}
 
-	return a < b? -1 : 1;
+	return textA < textB? -1 : 1;
 };
 
 // Private functions
