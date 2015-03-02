@@ -222,6 +222,10 @@ pre.language-javascript::before {
 	content: "JS";
 }
 
+pre.language-css::before {
+	content: "CSS";
+}
+
 table {
 	table-layout: fixed;
 	border-spacing: 0;
