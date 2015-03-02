@@ -5,8 +5,8 @@
 <meta charset="utf-8" />
 <title>Awesomplete: Ultra lightweight, highly customizable, simple autocomplete, by Lea Verou</title>
 <link rel="stylesheet" href="https://leaverou.github.io/prism/themes/prism.css" />
-<link rel="stylesheet" href="plugins/awesomplete.select.css" />
 <link rel="stylesheet" href="awesomplete.css" />
+<link rel="stylesheet" href="examples.css" />
 <link rel="stylesheet" href="style.css" />
 
 <script src="awesomplete.js"></script>
@@ -362,8 +362,8 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	</section>
 
 	<section id="select-box">
-	<h2>Select box autocomplete (with select box plugin)</h2>
-	<p>The underlying (hidden) select box is changed accordingly</p>
+	<h2>Select box autocomplete</h2>
+	<p>The underlying (hidden) select box is changed accordingly.</p>
 	<p>
 		<select class="awesomplete" data-minchars="4">
 			<option>Ada</option>
@@ -386,6 +386,80 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	&lt;option>Node.js&lt;/option>
 	&lt;option>Ruby on Rails&lt;/option>
 &lt;/select></code></pre>
+
+	<pre class="language-javascript"><code>
+
+function copySelectedValue(input, select){
+	//Copy select box text to input field
+	if(select.selectedIndex > -1){
+		input.value = select.options[select.selectedIndex].text;
+	}
+}
+
+function init() {
+	Awesomplete.$$("select.awesomplete").forEach(function (select) {
+
+		//Copying all data-* attributes
+		var dataAttributes = Array.prototype.slice.call(select.attributes)
+			.filter(function(attr) {
+				return /^data-/.test(attr.name);
+			}).reduce(function(obj, attr){
+				obj[attr.name] = attr.value;
+				return obj;
+			}, {});
+
+		//Create input element used by Awesomplete
+		var input = Awesomplete.$.create('input', dataAttributes);
+		select.parentElement.insertBefore(input, select);
+        select.setAttribute("hidden", "");
+
+        copySelectedValue(input, select);
+
+        //Start Awesomplete
+        var awesompleteElement = new Awesomplete(input, {
+            list: select
+        });
+
+        //Create dropdown button
+        var button = Awesomplete.$.create('button');
+        input.parentElement.insertBefore(button, input.nextSibling);
+
+        Awesomplete.$.bind(button, {
+			'click': function(){
+				//When user clicks on button, open full suggestion list
+				awesompleteElement.evaluate("");
+			}
+		});
+
+		Awesomplete.$.bind(input, {
+			'awesomplete-selectcomplete': function(){
+				//When user selects an item, update the real hidden select box
+				var selectedItems = Awesomplete.$$("option", select).filter(function(elem){
+					return  elem.text === input.value
+				});
+				if(selectedItems.length > 0){
+					select.value = selectedItems[0].value;	
+				}
+			},
+			'blur': function(){
+				//When user deselects input box synchronize it with the real selected item
+				copySelectedValue(input, select);
+			}
+		});
+		
+		
+	});
+}
+
+// DOM already loaded?
+if (document.readyState !== "loading") {
+	init();
+} else {
+	// Wait for it
+	document.addEventListener("DOMContentLoaded", init);
+}
+
+	</code></pre>
 	</section>
 </section>
 
@@ -405,7 +479,6 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 <footer>Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> &bull; <a href="http://lea.verou.me/2015/02/awesomplete-2kb-autocomplete-with-zero-dependencies">Read the blog post</a> &bull; <a href="http://shop.oreilly.com/product/0636920031123.do">Buy my book!</a> </footer>
 
 <script src="awesomplete.js"></script>
-<script src="plugins/awesomplete.select.js"></script>
 <script src="https://leaverou.github.io/prism/prism.js" defer></script>
 
 <a href="https://twitter.com/share" class="twitter-share-button" data-via="LeaVerou" data-size="large">Tweet</a>

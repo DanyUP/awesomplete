@@ -1,0 +1,13 @@
+.awesomplete button:after{
+	content: "\25BC";
+}
+
+.awesomplete button {
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: transparent;
+	border: none;
+	box-shadow: none;
+}
