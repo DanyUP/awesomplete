@@ -388,8 +388,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 &lt;/select></code></pre>
 
 
-	<pre class="language-css"><code>
-.awesomplete button:after{
+	<pre class="language-css"><code>.awesomplete button:after{
 	content: "\25BC";
 }
 
@@ -401,12 +400,9 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	background: transparent;
 	border: none;
 	box-shadow: none;
-}
-	</code></pre>
+}</code></pre>
 
-	<pre class="language-javascript"><code><script>
-
-function copySelectedValue(input, select){
+	<pre class="language-javascript"><code><script>function copySelectedValue(input, select){
 	//Copy select box text to input field
 	if(select.selectedIndex > -1){
 		input.value = select.options[select.selectedIndex].text;
@@ -462,11 +458,7 @@ Awesomplete.$$("select.awesomplete").forEach(function (select) {
 			copySelectedValue(input, select);
 		}
 	});
-});
-
-
-
-	</script></code></pre>
+});</script></code></pre>
 
 
 	</section>
