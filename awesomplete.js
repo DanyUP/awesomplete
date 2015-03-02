@@ -108,33 +108,29 @@ var _ = self.Awesomplete = function (input, o) {
 	_.all.push(this);
 };
 
-var ListItem = function(text, attachedElement){
-	this.text = text;
-	this.attachedElement = attachedElement;
-}
-
-function stringToListItem(text){
-	if(typeof text === 'string'){
-		return new ListItem(text);
-	} else {
-		return text;
-	}
+function toListItem(text){
+	return {
+		text: text
+	};
 }
 
 _.prototype = {
 	set list(list) {
 		if (Array.isArray(list)) {
-			this._list = list.map(stringToListItem);
+			this._list = list.map(toListItem);
 		}
 		else if (typeof list === "string" && list.indexOf(",") > -1) {
-				this._list = list.split(/\s*,\s*/).map(stringToListItem);
+				this._list = list.split(/\s*,\s*/).map(toListItem);
 		}
 		else { // Element or CSS selector
 			list = $(list);
 
 			if (list && list.children) {
 				this._list = slice.apply(list.children).map(function (el) {
-					return new ListItem(el.innerHTML.trim(), el);
+					return {
+						text: el.innerHTML.trim(),
+						attachedElement: el
+					};
 				});
 			}
 		}
